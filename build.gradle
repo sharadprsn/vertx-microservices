@@ -1,0 +1,85 @@
+allprojects {
+    ext {
+        junit_jupiter = '5.3.1'
+        mockito_core = '2.19.0'
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+
+    dependencies{
+        //classpath 'gradle.plugin.com.google.cloud.tools:jib-gradle-plugin:1.1.2'
+    }
+}
+
+
+
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    //apply plugin: 'com.google.cloud.tools.jib'
+
+
+    sourceCompatibility = 11
+    targetCompatibility = 11
+
+    repositories {
+        mavenCentral()
+    }
+
+    afterEvaluate {
+
+        compileJava {
+            inputs.property('moduleName', moduleName)
+            doFirst {
+                options.compilerArgs = [
+                        '--module-path', classpath.asPath,
+                ]
+                classpath = files()
+            }
+        }
+
+        compileTestJava {
+            inputs.property('moduleName', moduleName)
+            inputs.property('testDependencies', testDependencies)
+            doFirst {
+                options.compilerArgs = [
+                        '--module-path', classpath.asPath,
+                        '--add-modules', testDependencies,
+                        '--add-reads', "$moduleName=$testDependencies",
+                        '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
+
+                ]
+                classpath = files()
+            }
+
+        }
+
+        test {
+            inputs.property('moduleName', moduleName)
+            inputs.property('testDependencies', testDependencies)
+            useJUnitPlatform()
+
+            doFirst {
+                jvmArgs = [
+                        '--module-path', classpath.asPath,
+                        '--add-modules', 'ALL-MODULE-PATH',
+                        '--add-exports', 'org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED',
+                        '--add-exports', 'org.junit.platform.commons/org.junit.platform.commons.util=vertx.junit5',
+                        '--add-exports' ,'org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED',
+                        '--add-reads', "$moduleName=$testDependencies",
+                        '--add-opens', "$moduleName/$moduleName=org.junit.platform.commons",
+                        '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+                ]
+                classpath = files()
+            }
+        }
+    }
+}
