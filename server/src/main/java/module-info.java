@@ -1,4 +1,4 @@
-module com.cb.qa.server {
+module com.cb.qa.app {
     requires vertx.rx.java2;
     requires io.reactivex.rxjava2;
     requires vertx.core;

@@ -1,5 +1,5 @@
 ext{
-    moduleName='com.cb.qa.server'
+    moduleName='com.cb.qa.app'
     testDependencies='org.junit.jupiter.api'
 }
 
