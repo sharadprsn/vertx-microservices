@@ -83,3 +83,10 @@ subprojects {
         }
     }
 }
+
+
+project(':server'){
+    dependencies{
+        compile project(':hello')
+    }
+}

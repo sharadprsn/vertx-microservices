@@ -1,3 +1,4 @@
 rootProject.name = 'vertx'
 include 'server'
+include 'hello'
 

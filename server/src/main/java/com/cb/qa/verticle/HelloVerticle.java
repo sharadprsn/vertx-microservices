@@ -34,4 +34,14 @@ public class HelloVerticle extends AbstractVerticle {
                 .putHeader(HttpHeaders.CONTENT_TYPE, "application/json")
                 .end(resp.encode());
     }
+
+
+    private void helloEvent(RoutingContext routingContext) {
+        JsonObject resp = new JsonObject();
+        Optional<String> requestParam = Optional.ofNullable(routingContext.pathParam("name"));
+        resp.put("message", ("hello " + requestParam.orElse("")).trim());
+        routingContext.response()
+                .putHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+                .end(resp.encode());
+    }
 }
