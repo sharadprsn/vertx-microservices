@@ -1,0 +1,16 @@
+ext{
+    moduleName='com.cb.qa.hello'
+    testDependencies='org.junit.jupiter.api'
+}
+
+dependencies {
+    compile 'io.vertx:vertx-rx-java2:3.8.0'
+    compile 'io.vertx:vertx-web:3.8.0'
+    compile 'io.vertx:vertx-web-client:3.8.0'
+    compile 'io.vertx:vertx-service-discovery:3.8.0'
+
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.5.1'
+    testCompile 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
+    testCompile 'org.assertj:assertj-core:3.8.0'
+    testCompile 'io.vertx:vertx-junit5:3.8.0'
+}
